@@ -1,0 +1,6 @@
+# Local background images (not licensed for distribution)
+images/
+backgrounds.js
+
+# OS files
+.DS_Store

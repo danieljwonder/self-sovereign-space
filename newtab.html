@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Self-Sovereign Space</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div id="background"></div>
+  <div id="background-image"></div>
+  <div id="overlay"></div>
+
+  <!-- Top data bar -->
+  <div id="top-bar">
+    <div class="top-item" id="block-height">
+      <span class="top-label">Block</span>
+      <span class="top-value" id="block-height-value">...</span>
+    </div>
+    <div class="top-item" id="halving">
+      <span class="top-label">Halving</span>
+      <span class="top-value" id="halving-value">...</span>
+    </div>
+    <div class="top-divider" id="tickers-divider"></div>
+    <div id="price-tickers-container"></div>
+    <div class="top-divider" id="feeds-divider"></div>
+    <div id="custom-feeds-container"></div>
+    <div class="top-divider"></div>
+    <div class="top-item" id="weather">
+      <span class="top-label">Queenstown</span>
+      <span class="top-value" id="weather-value">...</span>
+    </div>
+    <div class="top-divider" id="clocks-divider"></div>
+    <div id="world-clocks-container"></div>
+    <div class="top-divider" id="countdown-divider"></div>
+    <div id="countdowns-container"></div>
+  </div>
+
+  <!-- Center content -->
+  <div id="center">
+    <div id="clock"></div>
+    <div id="greeting"></div>
+    <div id="mantra">Move with wonder. Act with intent.</div>
+  </div>
+
+  <!-- Bottom quote -->
+  <div id="bottom-bar">
+    <div id="quote"></div>
+    <div id="quote-author"></div>
+  </div>
+
+  <!-- Settings gear -->
+  <button id="settings-btn" title="Settings">&#9881;</button>
+
+  <!-- Settings modal -->
+  <div id="settings-overlay" class="hidden">
+    <div id="settings-modal">
+      <div id="settings-tabs">
+        <button class="settings-tab active" data-tab="personal">Personal</button>
+        <button class="settings-tab" data-tab="display">Display</button>
+        <button class="settings-tab" data-tab="time">Time</button>
+        <button class="settings-tab" data-tab="crypto">Crypto</button>
+        <button class="settings-tab" data-tab="secrets">APIs</button>
+      </div>
+
+      <!-- Personal tab -->
+      <div class="settings-tab-content active" id="tab-personal">
+        <label>
+          <span>Name</span>
+          <input type="text" id="setting-name" placeholder="Friend">
+        </label>
+        <label>
+          <span>Mantra</span>
+          <input type="text" id="setting-mantra" placeholder="Move with wonder. Act with intent.">
+        </label>
+        <label>
+          <span>Weather City</span>
+          <input type="text" id="setting-weather-city" placeholder="Queenstown">
+        </label>
+        <label>
+          <span>Weather Country</span>
+          <input type="text" id="setting-weather-country" placeholder="NZ">
+        </label>
+      </div>
+
+      <!-- Display tab -->
+      <div class="settings-tab-content" id="tab-display">
+        <div class="settings-section">
+          <span class="settings-section-title">Background Images</span>
+          <p class="settings-hint">Your own image collection. Used when APOD is off.</p>
+          <div id="image-list"></div>
+          <div id="add-image-row">
+            <input type="text" id="setting-new-image" placeholder="Paste image URL">
+            <button id="add-image-btn">+</button>
+          </div>
+          <div id="image-count"></div>
+        </div>
+
+        <label class="settings-toggle">
+          <span>Use NASA Astronomy Picture of the Day</span>
+          <input type="checkbox" id="setting-apod-enabled">
+          <div class="toggle-switch"></div>
+        </label>
+      </div>
+
+      <!-- Time tab -->
+      <div class="settings-tab-content" id="tab-time">
+        <div class="settings-section">
+          <span class="settings-section-title">World Clocks</span>
+          <div id="world-clocks-list"></div>
+          <div id="add-clock-row">
+            <input type="text" id="setting-new-clock-label" placeholder="Label (e.g. Tokyo)">
+            <input type="text" id="setting-new-clock-tz" placeholder="Timezone (e.g. Asia/Tokyo)">
+            <button id="add-clock-btn">+</button>
+          </div>
+          <p class="settings-hint"><a href="https://en.wikipedia.org/wiki/List_of_tz_database_time_zones" target="_blank" style="color: rgba(255,255,255,0.4);">Timezone list</a></p>
+        </div>
+
+        <div class="settings-section">
+          <span class="settings-section-title">Countdown Timers</span>
+          <div id="countdown-list"></div>
+          <div id="add-countdown-row">
+            <input type="text" id="setting-new-countdown-label" placeholder="Label">
+            <input type="date" id="setting-new-countdown-date">
+            <button id="add-countdown-btn">+</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Crypto tab -->
+      <div class="settings-tab-content" id="tab-crypto">
+        <div class="settings-section">
+          <span class="settings-section-title">Price Tickers</span>
+          <p class="settings-hint">CoinGecko IDs (e.g. bitcoin, ethereum, solana, dogecoin)</p>
+          <div id="tickers-list"></div>
+          <div id="add-ticker-row">
+            <input type="text" id="setting-new-ticker-label" placeholder="Label (e.g. SOL)">
+            <input type="text" id="setting-new-ticker-id" placeholder="CoinGecko ID (e.g. solana)">
+            <select id="setting-new-ticker-decimals">
+              <option value="0">0dp</option>
+              <option value="1">1dp</option>
+              <option value="2" selected>2dp</option>
+              <option value="3">3dp</option>
+              <option value="4">4dp</option>
+              <option value="5">5dp</option>
+              <option value="6">6dp</option>
+              <option value="7">7dp</option>
+              <option value="8">8dp</option>
+            </select>
+            <button id="add-ticker-btn">+</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- APIs tab -->
+      <div class="settings-tab-content" id="tab-secrets">
+        <label>
+          <span>OpenWeatherMap API Key</span>
+          <input type="password" id="setting-weather-key" placeholder="API key">
+          <p class="settings-hint"><a href="https://home.openweathermap.org/api_keys" target="_blank" style="color: rgba(255,255,255,0.4);">Get a free API key</a></p>
+        </label>
+        <label>
+          <span>NASA APOD API Key</span>
+          <input type="password" id="setting-nasa-key" placeholder="API key">
+          <p class="settings-hint"><a href="https://api.nasa.gov/" target="_blank" style="color: rgba(255,255,255,0.4);">Get a free API key</a></p>
+        </label>
+
+        <div class="settings-section">
+          <span class="settings-section-title">Custom Data Feeds</span>
+          <p class="settings-hint">Pull any numeric value from a JSON API. Use dot notation for the path (e.g. data.amount)</p>
+          <div id="feeds-list"></div>
+          <div class="feed-add-form">
+            <div class="feed-add-row">
+              <input type="text" id="setting-new-feed-url" placeholder="URL">
+            </div>
+            <div class="feed-add-row">
+              <input type="text" id="setting-new-feed-label" placeholder="Label">
+              <input type="text" id="setting-new-feed-path" placeholder="JSON path">
+              <select id="setting-new-feed-decimals">
+                <option value="0" selected>0dp</option>
+                <option value="1">1dp</option>
+                <option value="2">2dp</option>
+                <option value="3">3dp</option>
+                <option value="4">4dp</option>
+                <option value="5">5dp</option>
+                <option value="6">6dp</option>
+                <option value="7">7dp</option>
+                <option value="8">8dp</option>
+              </select>
+              <button id="add-feed-btn">+</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="settings-actions">
+        <button id="settings-save">Save</button>
+        <button id="settings-cancel">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="quotes.js"></script>
+  <script src="backgrounds.js" onerror="window.BACKGROUNDS=[]"></script>
+  <script src="app.js"></script>
+</body>
+</html>
