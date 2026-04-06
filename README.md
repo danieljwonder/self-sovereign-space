@@ -1,6 +1,6 @@
 # Self-Sovereign Space
 
-A Chrome extension that replaces your new tab page with a self-sovereign personal dashboard focused on crypto, countdowns and intentional living.
+A browser extension for Chrome and Firefox that replaces your new tab page with a self-sovereign personal dashboard focused on crypto, countdowns and intentional living.
 
 No tracking. No analytics. No accounts. Your data stays in your browser.
 
@@ -20,6 +20,8 @@ No tracking. No analytics. No accounts. Your data stays in your browser.
 
 ## Install
 
+### Chrome
+
 1. Clone or download this repository
 2. Open Chrome and navigate to `chrome://extensions`
 3. Enable **Developer mode** (toggle in the top right)
@@ -28,6 +30,16 @@ No tracking. No analytics. No accounts. Your data stays in your browser.
 6. Open a new tab — your dashboard is ready
 
 To update after pulling changes, go back to `chrome://extensions` and click the refresh icon on the extension card.
+
+### Firefox
+
+1. Clone or download this repository
+2. Open Firefox and navigate to `about:debugging#/runtime/this-firefox`
+3. Click **Load Temporary Add-on**
+4. Select the `manifest.json` file inside the `Self Sovereign Space` folder
+5. Open a new tab — your dashboard is ready
+
+Note: Temporary add-ons are removed when Firefox closes. For a permanent install, the extension needs to be signed via [addons.mozilla.org](https://addons.mozilla.org).
 
 ## Settings
 
@@ -98,12 +110,13 @@ Set the JSON path to `result.price` to extract `42.5`. Use the decimal place sel
 
 ## Storage
 
-All settings are saved to `chrome.storage.sync`, which syncs across Chrome instances if you're signed in. Falls back to `localStorage` when running outside of Chrome.
+All settings are saved to the browser's extension storage API (`chrome.storage.sync` on Chrome, `browser.storage.sync` on Firefox), which syncs across browser instances if you're signed in. Falls back to `localStorage` when running outside of a supported browser.
 
 ## File Structure
 
 ```
-├── manifest.json       Chrome extension manifest (v3)
+├── manifest.json       Extension manifest (v3, Chrome + Firefox)
+├── defaults.js          Fallback defaults for optional files
 ├── newtab.html          Dashboard HTML
 ├── app.js               Application logic
 ├── styles.css           Styles

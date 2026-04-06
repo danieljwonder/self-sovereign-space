@@ -31,29 +31,26 @@ const CONFIG = {
 // User image URLs (loaded from storage)
 let userImages = [];
 
-// ── Storage helper (chrome.storage.sync with localStorage fallback) ──────────
+// ── Storage helper (browser/chrome storage.sync with localStorage fallback) ──
+const extensionApi = typeof browser !== 'undefined' ? browser : (typeof chrome !== 'undefined' ? chrome : null);
+
 const store = {
-  get(key) {
-    return new Promise(resolve => {
-      if (typeof chrome !== 'undefined' && chrome.storage && chrome.storage.sync) {
-        chrome.storage.sync.get(key, result => resolve(result[key]));
-      } else {
-        const val = localStorage.getItem(key);
-        resolve(val ? JSON.parse(val) : undefined);
-      }
-    });
+  async get(key) {
+    if (extensionApi && extensionApi.storage && extensionApi.storage.sync) {
+      const result = await extensionApi.storage.sync.get(key);
+      return result[key];
+    }
+    const val = localStorage.getItem(key);
+    return val ? JSON.parse(val) : undefined;
   },
-  set(obj) {
-    return new Promise(resolve => {
-      if (typeof chrome !== 'undefined' && chrome.storage && chrome.storage.sync) {
-        chrome.storage.sync.set(obj, resolve);
-      } else {
-        for (const [k, v] of Object.entries(obj)) {
-          localStorage.setItem(k, JSON.stringify(v));
-        }
-        resolve();
+  async set(obj) {
+    if (extensionApi && extensionApi.storage && extensionApi.storage.sync) {
+      await extensionApi.storage.sync.set(obj);
+    } else {
+      for (const [k, v] of Object.entries(obj)) {
+        localStorage.setItem(k, JSON.stringify(v));
       }
-    });
+    }
   }
 };
 
@@ -296,7 +293,9 @@ function renderTickersBar() {
   const container = document.getElementById('price-tickers-container');
   const divider = document.getElementById('tickers-divider');
   container.innerHTML = '';
-  divider.style.display = CONFIG.priceTickers.length ? '' : 'none';
+  const hasTickers = CONFIG.priceTickers.length > 0;
+  divider.style.display = hasTickers ? '' : 'none';
+  container.style.display = hasTickers ? '' : 'none';
 
   CONFIG.priceTickers.forEach(({ label, id }) => {
     const item = document.createElement('div');
@@ -366,7 +365,9 @@ function renderFeedsBar() {
   const container = document.getElementById('custom-feeds-container');
   const divider = document.getElementById('feeds-divider');
   container.innerHTML = '';
-  divider.style.display = CONFIG.customFeeds.length ? '' : 'none';
+  const hasFeeds = CONFIG.customFeeds.length > 0;
+  divider.style.display = hasFeeds ? '' : 'none';
+  container.style.display = hasFeeds ? '' : 'none';
 
   CONFIG.customFeeds.forEach((feed, i) => {
     const item = document.createElement('div');
