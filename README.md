@@ -117,6 +117,7 @@ All settings are saved to the browser's extension storage API (`chrome.storage.s
 ```
 ├── manifest.json       Extension manifest (v3, Chrome + Firefox)
 ├── defaults.js          Fallback defaults for optional files
+├── fonts/               Bundled Inter font (SIL Open Font License)
 ├── newtab.html          Dashboard HTML
 ├── app.js               Application logic
 ├── styles.css           Styles
